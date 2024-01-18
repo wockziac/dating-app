@@ -21,12 +21,12 @@ func NewCredentialsUsecase(
 }
 
 func (uc CredentialsUseCase) RegisterCredential(request core.CredentialRequest) error {
-	Creds, err := uc.CredentialsRepo.GetCredentials(request.PhoneNumber)
+	creds, err := uc.CredentialsRepo.GetCredentials(request.PhoneNumber)
 	if err != nil {
 		return fmt.Errorf("error when process  credential")
 	}
 
-	if Creds != nil {
+	if creds != nil {
 		return fmt.Errorf("credentials already exists")
 	}
 

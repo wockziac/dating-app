@@ -20,7 +20,11 @@ func NewCredentialRepository() *CredentialRepository {
 func (r *CredentialRepository) GetCredentials(phoneNumber string) (*core.Credentials, error) {
 	r.writeMtx.RLock()
 	defer r.writeMtx.RUnlock()
-	data := r.data[phoneNumber]
+	data, exist := r.data[phoneNumber]
+
+	if !exist {
+		return nil, nil
+	}
 
 	return &core.Credentials{
 		UserID:       data.UserID,

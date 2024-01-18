@@ -17,11 +17,24 @@ func NewProfileRepository() *ProfileRepository {
 	}
 }
 
-func (r *ProfileRepository) GetUserProfile(profileID int) core.Profile {
+func (r *ProfileRepository) GetUserProfile(profileID int) *core.Profile {
 	r.writeMtx.RLock()
-	profile := r.data[profileID]
 	defer r.writeMtx.RUnlock()
-	return profile
+
+	profile, exist := r.data[profileID]
+	if !exist {
+		return nil
+	}
+
+	return &core.Profile{
+		UserID:      profile.UserID,
+		ProfileID:   profile.ProfileID,
+		Name:        profile.Name,
+		DOB:         profile.DOB,
+		Gender:      profile.Gender,
+		Interests:   profile.Interests,
+		Description: profile.Description,
+	}
 }
 
 func (r *ProfileRepository) InsertNewProfile(profile core.Profile) (core.Profile, error) {
