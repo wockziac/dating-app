@@ -54,3 +54,16 @@ func (j JWTProvider) GenerateToken(session core.Session) (core.SessionToken, err
 		ExpiryTime: expiredAt,
 	}, nil
 }
+
+func (j JWTProvider) IsTokenValid(token string) bool {
+
+	jwtToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		return SIGNING_KEY, nil
+	})
+
+	if err != nil {
+		return false
+	}
+
+	return jwtToken.Valid
+}

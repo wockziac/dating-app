@@ -23,4 +23,11 @@ func TestGenerateToken(t *testing.T) {
 	})
 }
 
-//key is of invalid type: ECDSA sign expects *ecsda.PrivateKey
+func TestIsTokenValid(t *testing.T) {
+	t.Run("token invalid", func(t *testing.T) {
+		provider := JWTProvider{}
+		valid := provider.IsTokenValid("ABCDEasdlkjfe")
+		assert.Equal(t, false, valid)
+
+	})
+}
