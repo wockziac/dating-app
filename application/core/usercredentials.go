@@ -18,13 +18,13 @@ type UserCredentialRequest struct {
 }
 
 type IUserCredentialRepository interface {
-	GetUserCredentials(phoneNumber, email string) (UserCredentials, error)
+	GetUserCredentials(phoneNumber string) (*UserCredentials, error)
 	InsertUserCredentials(UserCredentials) (UserCredentials, error)
 }
 
 type IUserCredentialUseCase interface {
-	Login(phoneNumber string) (string, error)
-	RegisterUserCredential(request UserCredentialRequest) (string, error)
+	// GetUserCredentials(phoneNumber, email string) (string, error)
+	RegisterUserCredential(request UserCredentialRequest) error
 }
 
 const (

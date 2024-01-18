@@ -1,12 +1,14 @@
 package core
 
-import "datingapp/application/utils/date"
+import (
+	"time"
+)
 
 type UserProfile struct {
 	UserID        int
 	UserProfileID int
 	Name          string
-	DOB           date.Date
+	DOB           time.Time
 	Gender        string
 	Interests     UserInterest
 	Description   string

@@ -1,9 +1,9 @@
 package core
 
 import (
-	"datingapp/application/utils/date"
 	phonenumberutil "datingapp/application/utils/phoneNumber"
 	"fmt"
+	"time"
 )
 
 const (
@@ -11,23 +11,37 @@ const (
 )
 
 type UserSession struct {
-	UserID          UserCredentials
+	Credential      UserCredentials
 	SessionID       int
 	OTP             string
-	OTPExpiryDate   date.Date
+	OTPExpiryDate   time.Time
 	Token           string
-	TokenExpiryDate date.Date
+	TokenExpiryDate time.Time
 }
 
 type IUserSessionUseCase interface {
-	InitiateLogin(request InitiateLoginRequest)
-	Login(request LoginRequest) UserSession
+	InitiateLogin(request InitiateLoginRequest) error
+	Login(request LoginRequest) (string, error)
 }
 
 type IUserSessionRepository interface {
 	InitiateLogin(session UserSession) error
 	Login(session UserSession) (UserSession, error)
 	GetUserSessionsByPhone(phoneNumber string) ([]UserSession, error)
+}
+
+type NewUserSessionRequest struct {
+	Credential    UserCredentials
+	OTP           string
+	OTPExpiryDate time.Time
+}
+
+func NewUserSession(request NewUserSessionRequest) UserSession {
+	return UserSession{
+		Credential:    request.Credential,
+		OTP:           request.OTP,
+		OTPExpiryDate: request.OTPExpiryDate,
+	}
 }
 
 type InitiateLoginRequest struct {
