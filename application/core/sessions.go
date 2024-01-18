@@ -10,8 +10,8 @@ const (
 	OTP_LENGTH = 4
 )
 
-type UserSession struct {
-	Credential      UserCredentials
+type Session struct {
+	Credential      Credentials
 	SessionID       int
 	OTP             string
 	OTPExpiryDate   time.Time
@@ -19,25 +19,25 @@ type UserSession struct {
 	TokenExpiryDate time.Time
 }
 
-type IUserSessionUseCase interface {
+type ISessionUseCase interface {
 	InitiateLogin(request InitiateLoginRequest) error
 	Login(request LoginRequest) (string, error)
 }
 
-type IUserSessionRepository interface {
-	InitiateLogin(session UserSession) error
-	Login(session UserSession) (UserSession, error)
-	GetUserSessionsByPhone(phoneNumber string) ([]UserSession, error)
+type ISessionRepository interface {
+	InitiateLogin(session Session) error
+	Login(session Session) (Session, error)
+	GetSessionsByPhone(phoneNumber string) ([]Session, error)
 }
 
-type NewUserSessionRequest struct {
-	Credential    UserCredentials
+type NewSessionRequest struct {
+	Credential    Credentials
 	OTP           string
 	OTPExpiryDate time.Time
 }
 
-func NewUserSession(request NewUserSessionRequest) UserSession {
-	return UserSession{
+func NewSession(request NewSessionRequest) Session {
+	return Session{
 		Credential:    request.Credential,
 		OTP:           request.OTP,
 		OTPExpiryDate: request.OTPExpiryDate,
