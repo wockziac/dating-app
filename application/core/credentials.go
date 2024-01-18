@@ -6,33 +6,32 @@ import (
 	"regexp"
 )
 
-type UserCredentials struct {
+type Credentials struct {
 	UserID       int
 	PhoneNumber  string
 	EmailAddress string
 }
 
-type UserCredentialRequest struct {
+type CredentialRequest struct {
 	PhoneNumber  string
 	EmailAddress string
 }
 
-type IUserCredentialRepository interface {
-	GetUserCredentials(phoneNumber string) (*UserCredentials, error)
-	InsertUserCredentials(UserCredentials) (UserCredentials, error)
+type ICredentialRepository interface {
+	GetCredentials(phoneNumber string) (*Credentials, error)
+	InsertCredentials(Credentials) (Credentials, error)
 }
 
-type IUserCredentialUseCase interface {
-	// GetUserCredentials(phoneNumber, email string) (string, error)
-	RegisterUserCredential(request UserCredentialRequest) error
+type ICredentialUseCase interface {
+	RegisterCredential(request CredentialRequest) error
 }
 
 const (
 	EMAIL_REGEX = `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 )
 
-func CreateNewUserCredential(request UserCredentialRequest) (UserCredentials, error) {
-	uc := UserCredentials{
+func CreateNewCredential(request CredentialRequest) (Credentials, error) {
+	uc := Credentials{
 		PhoneNumber:  request.PhoneNumber,
 		EmailAddress: request.EmailAddress,
 	}
@@ -41,7 +40,7 @@ func CreateNewUserCredential(request UserCredentialRequest) (UserCredentials, er
 	return uc, err
 }
 
-func (uc *UserCredentials) Validate() error {
+func (uc *Credentials) Validate() error {
 	if uc.EmailAddress == "" {
 		return fmt.Errorf("empty email address")
 	}

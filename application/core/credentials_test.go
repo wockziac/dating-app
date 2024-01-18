@@ -10,7 +10,7 @@ import (
 func TestValidateUserCredentials(t *testing.T) {
 
 	t.Run("empty email address", func(t *testing.T) {
-		uc := UserCredentials{}
+		uc := Credentials{}
 		err := uc.Validate()
 		assert.NotNil(t, err)
 		assert.Equal(t, err.Error(), "empty email address")
@@ -24,7 +24,7 @@ func TestValidateUserCredentials(t *testing.T) {
 			"waingapuw@com",
 		}
 
-		uc := UserCredentials{}
+		uc := Credentials{}
 		for _, email := range invalidEmails {
 			uc.EmailAddress = email
 			err := uc.Validate()
@@ -33,7 +33,7 @@ func TestValidateUserCredentials(t *testing.T) {
 	})
 
 	t.Run("empty phone number", func(t *testing.T) {
-		uc := UserCredentials{
+		uc := Credentials{
 			EmailAddress: "waingapu@gmail.com",
 		}
 		err := uc.Validate()
@@ -46,7 +46,7 @@ func TestValidateUserCredentials(t *testing.T) {
 			"+628-221-234-856-7888",
 			"081850147",
 		}
-		uc := UserCredentials{
+		uc := Credentials{
 			EmailAddress: "waingapu@gmail.com",
 		}
 		for _, number := range invalidPhones {
