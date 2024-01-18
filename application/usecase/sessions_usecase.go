@@ -4,17 +4,20 @@ import (
 	"datingapp/application/core"
 	otputil "datingapp/application/utils/otp"
 	"fmt"
+	"time"
 )
 
 type SessionUseCase struct {
-	SessionRepo    core.ISessionRepository
-	CredentialRepo core.ICredentialRepository
+	SessionRepo          core.ISessionRepository
+	CredentialRepo       core.ICredentialRepository
+	SessionTokenProvider core.ISessionTokenProvider
 }
 
-func NewSessionUseCase(usrsSessionRepo core.ISessionRepository, usrCredRepo core.ICredentialRepository) *SessionUseCase {
+func NewSessionUseCase(usrsSessionRepo core.ISessionRepository, usrCredRepo core.ICredentialRepository, tokenProvider core.ISessionTokenProvider) *SessionUseCase {
 	return &SessionUseCase{
-		SessionRepo:    usrsSessionRepo,
-		CredentialRepo: usrCredRepo,
+		SessionRepo:          usrsSessionRepo,
+		CredentialRepo:       usrCredRepo,
+		SessionTokenProvider: tokenProvider,
 	}
 }
 
@@ -43,5 +46,34 @@ func (uc *SessionUseCase) InitiateLogin(request core.InitiateLoginRequest) error
 
 func (uc *SessionUseCase) Login(request core.LoginRequest) (string, error) {
 
-	return "", nil
+	sessions, err := uc.SessionRepo.GetSessionsByPhone(request.PhoneNumber)
+	if err != nil {
+		return "", fmt.Errorf("error when get user sessions")
+	}
+
+	var session *core.Session
+	for _, item := range sessions {
+		otpExpiration := item.OTPExpiryDate.Sub(time.Now()).Seconds()
+		if item.OTP == request.OTP && otpExpiration > 0 {
+			session = item
+			break
+		}
+	}
+
+	if session == nil {
+		return "", fmt.Errorf("failed login")
+	}
+
+	sessionToken, err := uc.SessionTokenProvider.GenerateToken(*session)
+	session.UpdateSessionToken(sessionToken)
+	if err != nil {
+		return "", fmt.Errorf("error generate token")
+	}
+
+	_, err = uc.SessionRepo.Login(session)
+	if err != nil {
+		return "", fmt.Errorf("error store session token")
+	}
+
+	return sessionToken.Token, nil
 }

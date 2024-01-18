@@ -14,23 +14,23 @@ type ISessionRepository struct {
 }
 
 // GetSessionsByPhone provides a mock function with given fields: phoneNumber
-func (_m *ISessionRepository) GetSessionsByPhone(phoneNumber string) ([]core.Session, error) {
+func (_m *ISessionRepository) GetSessionsByPhone(phoneNumber string) ([]*core.Session, error) {
 	ret := _m.Called(phoneNumber)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetSessionsByPhone")
 	}
 
-	var r0 []core.Session
+	var r0 []*core.Session
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) ([]core.Session, error)); ok {
+	if rf, ok := ret.Get(0).(func(string) ([]*core.Session, error)); ok {
 		return rf(phoneNumber)
 	}
-	if rf, ok := ret.Get(0).(func(string) []core.Session); ok {
+	if rf, ok := ret.Get(0).(func(string) []*core.Session); ok {
 		r0 = rf(phoneNumber)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]core.Session)
+			r0 = ret.Get(0).([]*core.Session)
 		}
 	}
 
@@ -44,7 +44,7 @@ func (_m *ISessionRepository) GetSessionsByPhone(phoneNumber string) ([]core.Ses
 }
 
 // InitiateLogin provides a mock function with given fields: session
-func (_m *ISessionRepository) InitiateLogin(session core.Session) error {
+func (_m *ISessionRepository) InitiateLogin(session *core.Session) error {
 	ret := _m.Called(session)
 
 	if len(ret) == 0 {
@@ -52,7 +52,7 @@ func (_m *ISessionRepository) InitiateLogin(session core.Session) error {
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(core.Session) error); ok {
+	if rf, ok := ret.Get(0).(func(*core.Session) error); ok {
 		r0 = rf(session)
 	} else {
 		r0 = ret.Error(0)
@@ -62,25 +62,27 @@ func (_m *ISessionRepository) InitiateLogin(session core.Session) error {
 }
 
 // Login provides a mock function with given fields: session
-func (_m *ISessionRepository) Login(session core.Session) (core.Session, error) {
+func (_m *ISessionRepository) Login(session *core.Session) (*core.Session, error) {
 	ret := _m.Called(session)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Login")
 	}
 
-	var r0 core.Session
+	var r0 *core.Session
 	var r1 error
-	if rf, ok := ret.Get(0).(func(core.Session) (core.Session, error)); ok {
+	if rf, ok := ret.Get(0).(func(*core.Session) (*core.Session, error)); ok {
 		return rf(session)
 	}
-	if rf, ok := ret.Get(0).(func(core.Session) core.Session); ok {
+	if rf, ok := ret.Get(0).(func(*core.Session) *core.Session); ok {
 		r0 = rf(session)
 	} else {
-		r0 = ret.Get(0).(core.Session)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*core.Session)
+		}
 	}
 
-	if rf, ok := ret.Get(1).(func(core.Session) error); ok {
+	if rf, ok := ret.Get(1).(func(*core.Session) error); ok {
 		r1 = rf(session)
 	} else {
 		r1 = ret.Error(1)

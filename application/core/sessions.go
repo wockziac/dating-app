@@ -25,9 +25,18 @@ type ISessionUseCase interface {
 }
 
 type ISessionRepository interface {
-	InitiateLogin(session Session) error
-	Login(session Session) (Session, error)
-	GetSessionsByPhone(phoneNumber string) ([]Session, error)
+	InitiateLogin(session *Session) error
+	Login(session *Session) (*Session, error)
+	GetSessionsByPhone(phoneNumber string) ([]*Session, error)
+}
+
+type ISessionTokenProvider interface {
+	GenerateToken(session Session) (SessionToken, error)
+}
+
+type SessionToken struct {
+	Token      string
+	ExpiryTime time.Time
 }
 
 type NewSessionRequest struct {
@@ -36,12 +45,17 @@ type NewSessionRequest struct {
 	OTPExpiryDate time.Time
 }
 
-func NewSession(request NewSessionRequest) Session {
-	return Session{
+func NewSession(request NewSessionRequest) *Session {
+	return &Session{
 		Credential:    request.Credential,
 		OTP:           request.OTP,
 		OTPExpiryDate: request.OTPExpiryDate,
 	}
+}
+
+func (s *Session) UpdateSessionToken(token SessionToken) {
+	s.Token = token.Token
+	s.TokenExpiryDate = token.ExpiryTime
 }
 
 type InitiateLoginRequest struct {
