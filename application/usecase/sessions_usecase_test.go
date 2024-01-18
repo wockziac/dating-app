@@ -25,7 +25,9 @@ func TestInitiateLogin(t *testing.T) {
 			EmailAddress: "banshee@gmng.com",
 		}, nil)
 
-		usrSessionUseCase := NewSessionUseCase(usrSessionRepo, usrCredRepo)
+		tokenProvider := new(mocks.ISessionTokenProvider)
+
+		usrSessionUseCase := NewSessionUseCase(usrSessionRepo, usrCredRepo, tokenProvider)
 		err := usrSessionUseCase.InitiateLogin(request)
 
 		assert.Nil(t, err)
