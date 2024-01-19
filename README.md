@@ -39,6 +39,12 @@ Code file structure inspired by Clean Architecture, separation of concern betwee
 2. Run `go mod tidy` to download dependencies
 3. Run using `go run ./main.go`
 
+### Development
+In order to contribute, you might want to install some tools:
+* `pre-commit` - `go install github.com/lietu/go-pre-commit@latest`
+* `golangci-lint` - `go install github.com/golangci/golangci-lint/cmd/golangci-lint`
+* `mockery` - `go install github.com/vektra/mockery/v2@latest`
+
 
 # Homeworks:
 There are some leftover task which haven't been implemented but important in order to improve system reliability, observability, maintainability
