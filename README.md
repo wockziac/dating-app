@@ -45,6 +45,7 @@ In order to contribute, you might want to install some tools:
 * `golangci-lint` - `go install github.com/golangci/golangci-lint/cmd/golangci-lint`
 * `mockery` - `go install github.com/vektra/mockery/v2@latest`
 
+
 # Homeworks:
 There are some leftover task which haven't been implemented but important in order to improve system reliability, observability, maintainability
 * Error object
