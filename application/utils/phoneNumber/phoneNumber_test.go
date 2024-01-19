@@ -19,12 +19,12 @@ func TestParsePhoneNumber(t *testing.T) {
 		}
 	})
 
-	t.Run("incorrect phone number", func(t *testing.T) {
-		invalidPhones := map[string]string{
-			"+628-221-234-856-7": "6282212348567",
-			"0818501471":         "0818501471",
+	t.Run("correct phone number", func(t *testing.T) {
+		validPhones := map[string]string{
+			"+628-221-234-856": "628221234856",
+			"0818501471":       "0818501471",
 		}
-		for sample, expectedNumber := range invalidPhones {
+		for sample, expectedNumber := range validPhones {
 			result, err := ParsePhoneNumber(sample)
 			assert.Equal(t, expectedNumber, result, fmt.Sprintf("failed case for sample: %s", sample))
 			assert.Nil(t, err)

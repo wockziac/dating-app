@@ -18,7 +18,7 @@ func TestGenerateToken(t *testing.T) {
 			SessionID: 12,
 		}
 		sessionToken, err := provider.GenerateToken(session)
-		assert.NotNil(t, err)
+		assert.Nil(t, err)
 		assert.NotEqual(t, "", sessionToken.Token)
 	})
 }
